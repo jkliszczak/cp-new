@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Playbook by Kleo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:         #080c14;
+      --bg-card:    #0e1420;
+      --bg-border:  rgba(21, 125, 255, 0.14);
+      --blue:       #157DFF;
+      --blue-mid:   #1a6de0;
+      --blue-light: #4da3ff;
+      --orange:     #FF6B2B;
+      --text:       #ffffff;
+      --text-2:     rgba(255,255,255,0.62);
+      --text-3:     rgba(255,255,255,0.35);
+      --radius:     16px;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background atmosphere ── */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+    .orb-1 {
+      width: 700px; height: 700px;
+      top: -280px; right: -160px;
+      background: radial-gradient(circle, rgba(21,125,255,0.22) 0%, transparent 65%);
+    }
+    .orb-2 {
+      width: 500px; height: 500px;
+      bottom: -120px; left: -120px;
+      background: radial-gradient(circle, rgba(21,125,255,0.10) 0%, transparent 65%);
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      top: 40%; left: 30%;
+      background: radial-gradient(circle, rgba(255,107,43,0.06) 0%, transparent 65%);
+    }
+
+    /* Noise grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      width: 100%;
+      max-width: 860px;
+      padding: 28px 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    /* ── Pill badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(21,125,255,0.12);
+      border: 1px solid rgba(21,125,255,0.28);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--blue-light);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      box-shadow: 0 0 8px var(--blue);
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      width: 100%;
+      max-width: 860px;
+      padding: 56px 32px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* ── Mascot + headline row ── */
+    .hero-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      margin-bottom: 36px;
+      width: 100%;
+    }
+
+    /* White background so the mascot's white elements read correctly on dark page */
+    .mascot-wrap {
+      flex-shrink: 0;
+      width: 96px;
+      height: 96px;
+      border-radius: 22px;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      box-shadow:
+        0 0 0 1px rgba(21,125,255,0.3),
+        0 12px 40px rgba(21,125,255,0.25),
+        0 0 60px rgba(21,125,255,0.10);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .mascot-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 18px;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    .hero-text { flex: 1; }
+
+    /* ── Sunday label ── */
+    .sunday-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sunday-label::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+
+    /* ── Headline — Plus Jakarta Sans matching kleo.so ── */
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(30px, 4.2vw, 50px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+
+    h1 .accent {
+      background: linear-gradient(90deg, var(--blue-light) 0%, #5be0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Intro text ── */
+    .intro {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-2);
+      margin-bottom: 36px;
+      line-height: 1.55;
+      max-width: 560px;
+    }
+
+    /* ── Cards grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(21,125,255,0.35);
+      background: rgba(14,20,32,0.9);
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(21,125,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg { width: 18px; height: 18px; color: var(--blue-light); }
+
+    .card-body strong {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .card-body span {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.4;
+    }
+
+    /* Gift card accent */
+    .card.gift {
+      border-color: rgba(255,107,43,0.2);
+      background: linear-gradient(135deg, rgba(255,107,43,0.06) 0%, var(--bg-card) 60%);
+    }
+    .card.gift .card-icon { background: rgba(255,107,43,0.15); }
+    .card.gift .card-icon svg { color: var(--orange); }
+    .card.gift:hover { border-color: rgba(255,107,43,0.4); }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(21,125,255,0.2), transparent);
+      margin-bottom: 36px;
+    }
+
+    /* ── Form label ── */
+    .form-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .form-sublabel {
+      font-size: 14px;
+      color: var(--text-3);
+      margin-bottom: 20px;
+    }
+
+    /* ── Beehiiv form wrapper ── */
+    .form-wrap { width: 100%; }
+    .form-desktop { display: block; }
+    .form-mobile  { display: none; }
+
+    /* ── Social proof strip ── */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .avatars { display: flex; }
+    .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+    }
+    .avatar:first-child { margin-left: 0; }
+
+    .proof-text { font-size: 13px; color: var(--text-3); }
+    .proof-text strong { color: var(--text-2); font-weight: 500; }
+
+    /* ── Footer ── */
+    footer {
+      width: 100%;
+      padding: 0 32px 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-3);
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--text-2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .topbar { padding: 20px 20px 0; }
+      .main { padding: 36px 20px 60px; }
+      .hero-row { gap: 18px; }
+      .mascot-wrap { width: 72px; height: 72px; border-radius: 16px; }
+      h1 { font-size: 28px; }
+      .cards { grid-template-columns: 1fr; }
+      .form-desktop { display: none; }
+      .form-mobile  { display: block; }
+    }
+
+    /* ── Entrance animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .main > * { animation: fadeUp 0.5s ease both; }
+    .hero-row      { animation-delay: 0.05s; }
+    .intro         { animation-delay: 0.12s; }
+    .cards         { animation-delay: 0.18s; }
+    .divider       { animation-delay: 0.24s; }
+    .form-label    { animation-delay: 0.28s; }
+    .form-sublabel { animation-delay: 0.30s; }
+    .form-wrap     { animation-delay: 0.33s; }
+    .social-proof  { animation-delay: 0.38s; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="wrapper">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <a href="https://kleo.so" class="logo-wrap" aria-label="Kleo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="107" height="32" viewBox="0 0 107 32" fill="none" style="height:30px;width:auto">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M31.9561 8.00001C31.9561 3.58384 28.3763 0 23.967 0H7.98907C3.57974 0 0 3.58384 0 8.00001V24C0 28.4142 3.57974 32 7.98907 32H23.967C28.3763 32 31.9561 28.4142 31.9561 24V8.00001Z" fill="#157DFF"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M14.2876 16.0003L24.7614 5.51123V26.4874L14.2876 16.0003V16.0003ZM14.2876 5.54648V26.4522C8.84521 26.0821 4.54559 21.5445 4.54559 16.0004C4.54559 10.4562 8.84521 5.9186 14.2876 5.54649V5.54648Z" fill="#FFFFFF"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M45.0016 4.67657V16.1703L53.8459 4.67657H60.2935L50.7402 16.9478L61.5424 29.1838H53.8797L45.0016 18.9414V29.1838H39.2291V4.67664H45.0016V4.67657ZM67.2809 4.67578V29.1838H61.7111V4.67578H67.2809ZM86.8937 21.5108H74.3363C74.8763 24.4856 77.6106 25.0614 79.8049 25.0614C81.5601 25.0614 83.7883 24.654 85.4422 23.8766V28.5414C84.0582 29.1172 81.8979 29.6244 78.7922 29.6244C73.2224 29.6244 68.834 26.0406 68.834 19.9892C68.834 14.1767 72.9523 10.4577 78.2182 10.4577C84.2608 10.4577 87.2651 15.0207 86.8937 21.5108ZM78.0158 14.6487C76.3617 14.6487 74.5726 15.3928 74.3025 18.1307H81.459C81.459 15.7316 79.9062 14.6487 78.0158 14.6487ZM97.2913 10.4577C102.321 10.4577 106.911 13.4325 106.911 20.0244C106.911 26.6163 102.321 29.6244 97.2913 29.6244C92.2613 29.6244 87.6702 26.6163 87.6702 20.0244C87.6702 13.4325 92.2613 10.4577 97.2913 10.4577ZM97.2913 14.7838C95.097 14.7838 93.3408 16.137 93.3408 20.0244C93.3408 23.8433 95.0286 25.2964 97.2913 25.2964C99.5521 25.2964 101.24 23.8433 101.24 20.0244C101.24 16.137 99.4857 14.7838 97.2913 14.7838Z" fill="#FFFFFF"/>
+        </svg>
+      </a>
+      <div class="badge"><span class="badge-dot"></span>Free Newsletter</div>
+    </div>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Hero row: mascot logo + headline -->
+      <div class="hero-row">
+        <!-- White tile so mascot's white/light elements read correctly against dark page -->
+        <div class="mascot-wrap">
+          <img
+            src="/mnt/user-data/uploads/Untitled__300_x_300_px___1_.png"
+            alt="Content Playbook by Kleo"
+          />
+        </div>
+
+        <div class="hero-text">
+          <div class="sunday-label">Every Sunday</div>
+          <h1>Build a profitable<br /><span class="accent">LinkedIn audience</span><br />in months, not years</h1>
+        </div>
+      </div>
+
+      <p class="intro">
+        The weekly playbook used by 32K+ LinkedIn creators to write faster, grow consistently, and turn their audience into real opportunities.
+      </p>
+
+      <!-- Benefit cards -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              <path d="M14 17.5h7M17.5 14v7"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <strong>5 post templates</strong>
+            <span>Real examples with full breakdowns you can use immediately</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <strong>3 micro-playbooks</strong>
+            <span>Actionable strategies to upgrade your content game</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              <path d="M18.5 2.5l2 2M19 5.5l1.5-1.5"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <strong>1 creator spotlight</strong>
+            <span>Behind-the-scenes Q&amp;A with top LinkedIn voices</span>
+          </div>
+        </div>
+
+        <div class="card gift">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="9" width="18" height="4" rx="1"/>
+              <rect x="5" y="13" width="14" height="8" rx="1"/>
+              <path d="M12 9V21"/>
+              <path d="M12 9C12 9 9 9 9 6.5C9 5 10 4 11.5 4C13 4 12 6 12 9Z"/>
+              <path d="M12 9C12 9 15 9 15 6.5C15 5 14 4 12.5 4C11 4 12 6 12 9Z"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <strong>Free sign-up gift</strong>
+            <span>300+ proven LinkedIn templates, yours on day one</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-label">Join free — one email every Sunday</div>
+      <div class="form-sublabel">No spam. Unsubscribe any time.</div>
+
+      <!-- Beehiiv embeds -->
+      <div class="form-wrap">
+        <!-- Desktop: compact horizontal form (385px wide, 61px tall) -->
+        <div class="form-desktop">
+          <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+          <iframe src="https://subscribe-forms.beehiiv.com/99f0c0f3-0f24-4a1a-930c-8abc543c698a" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width: 385px; height: 61px; margin: 0; border-radius: 0px 0px 0px 0px !important; background-color: transparent; box-shadow: 0 0 #0000; max-width: 100%;"></iframe>
+        </div>
+        <!-- Mobile: stacked full-width form -->
+        <div class="form-mobile">
+          <iframe src="https://subscribe-forms.beehiiv.com/14023345-633a-4175-a07b-3be90efdf9f9" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width: 100%; height: 120px; margin: 0; border-radius: 0px 0px 0px 0px !important; background-color: transparent; box-shadow: 0 0 #0000; max-width: 100%;"></iframe>
+        </div>
+      </div>
+
+      <!-- Social proof -->
+      <div class="social-proof">
+        <div class="avatars">
+          <div class="avatar" style="background:linear-gradient(135deg,#157DFF,#4da3ff)">J</div>
+          <div class="avatar" style="background:linear-gradient(135deg,#1a6de0,#5be0ff)">L</div>
+          <div class="avatar" style="background:linear-gradient(135deg,#0d3080,#157DFF)">R</div>
+          <div class="avatar" style="background:linear-gradient(135deg,#157DFF,#38bdf8)">C</div>
+          <div class="avatar" style="background:linear-gradient(135deg,#1e40af,#60a5fa)">+</div>
+        </div>
+        <div class="proof-text">Joined by <strong>32,000+ creators</strong> this week</div>
+      </div>
+
+    </main>
+
+    <footer>
+      <a href="https://kleo.so/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="https://kleo.so" target="_blank" rel="noopener">kleo.so</a>
+    </footer>
+
+  </div>
+
+</body>
+</html>
